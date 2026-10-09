@@ -72,7 +72,6 @@ export function totalPrice(products) {
  * Filter, then map — chained, on one line. Remember `export`.
  */
 
-// TODO: write inStockNames here.
 export function inStockNames(products) {
   return products.filter((product) => product.inStock).map((product) => product.name);
 }
