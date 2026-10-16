@@ -24,9 +24,9 @@
  * @returns {{ name: string, price: number }}
  */
 export function readForm() {
-  // TODO: read .value off each input. Trim the name, and convert the price
-  // with Number().
-  throw new Error("readForm is not written yet");
+  const name = document.getElementById("name").value.trim();
+  const price = Number(document.getElementById("price").value) || 0;
+  return { name, price };
 }
 
 /**
@@ -35,9 +35,10 @@ export function readForm() {
  * @returns {void}
  */
 export function clearForm() {
-  // TODO: set each input's .value to an empty string.
-  throw new Error("clearForm is not written yet");
+  document.getElementById("name").value = "";
+  document.getElementById("price").value = "";
 }
+
 
 /**
  * Draws the list from an array of items, replacing whatever was there before.
@@ -52,9 +53,17 @@ export function clearForm() {
  * @returns {void}
  */
 export function renderList(items) {
-  // TODO: empty #list first, then build one card per item — the same card
-  // shape as module 12.
-  throw new Error("renderList is not written yet");
+  const list = document.getElementById("list");
+  list.innerHTML = "";
+  items.forEach(item => {
+    const card = document.createElement("li");
+    card.className = "card";
+    card.innerHTML = `
+      <h3>${item.name}</h3>
+      <p class="price">${item.price} EGP</p>
+    `;
+    list.appendChild(card);
+  });
 }
 
 /**
@@ -86,4 +95,29 @@ export function renderList(items) {
  * Remember `export`.
  */
 
-// TODO: write wireForm here.
+let products = [];
+
+export function wireForm() {
+  document.getElementById("product-form").onsubmit = (event) => {
+    event.preventDefault();
+
+    const { name, price } = readForm();
+    const error = document.getElementById("error");
+
+    if (name === "") {
+      error.textContent = "Give the product a name.";
+      return;
+    }
+    if (price <= 0) {
+      error.textContent = "Give the product a price.";
+      return;
+    }
+
+    error.textContent = "";
+    products.push({ name, price });
+    renderList(products);
+    clearForm();
+  };
+}
+
+wireForm();
